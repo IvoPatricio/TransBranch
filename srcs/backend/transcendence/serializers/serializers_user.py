@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, FriendRequest
+from ..models import User
 from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,8 +21,3 @@ class UserSerializer(serializers.ModelSerializer):
         user.password = make_password(validated_data['password'])
         user.save()
         return user
-
-class FriendRequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FriendRequest
-        fields = ['id', 'user1', 'user2', 'was_accepted', 'was_canceled', 'was_refused']
