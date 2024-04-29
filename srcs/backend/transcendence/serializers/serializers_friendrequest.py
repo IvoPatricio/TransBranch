@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from ..models import FriendRequest
-from django.contrib.auth.hashers import make_password
 
 class FriendRequestSerializer(serializers.ModelSerializer):
     class Meta:
