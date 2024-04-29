@@ -17,9 +17,9 @@ class FriendCreate(APIView):
         try:
             friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2)
             serializer = FriendRequestSerializer(friend_request)
-            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'error': str(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #PATCH updates resources on the server. 
 class FriendCancel(APIView):
@@ -30,9 +30,9 @@ class FriendCancel(APIView):
             friend_request.was_canceled = True
             friend_request.save()
             serializer = FriendRequestSerializer(friend_request)
-            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'Error': str(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class FriendAccept(APIView):
     def patch(self, request, friend_request_id, format=None):
@@ -41,9 +41,9 @@ class FriendAccept(APIView):
             friend_request.was_accepted = True
             friend_request.save()
             serializer = FriendRequestSerializer(friend_request)
-            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'Error': str(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class FriendRefuse(APIView):
     def patch(self, request, friend_request_id, format=None):
@@ -52,9 +52,9 @@ class FriendRefuse(APIView):
             friend_request.was_refused = True
             friend_request.save()
             serializer = FriendRequestSerializer(friend_request)
-            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'Error': str(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #GET retrieves data from the server
 class FriendDetail(APIView):
@@ -62,9 +62,9 @@ class FriendDetail(APIView):
         try:
             friend_request = FriendRequest.objects.get(pk = friend_request_id)
             serializer = FriendRequestSerializer(friend_request)
-            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
-            return JsonResponse({'Error': str(error)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #class UserFriendRequests(APIView):
 #    def get(self, request, userId, format=None):
