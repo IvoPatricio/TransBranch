@@ -1,6 +1,6 @@
 from django.urls import path
 from .views_user import UserCreate, UserList, UserDetail, UserUpdate, UserDelete
-from .views_friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetail
+from .views_friendrequest import FriendCreate, FriendCancel, FriendAccept, FriendRefuse, FriendDetail, UserFriendRequests
 
 urlpatterns = [
     path('create_user/', UserCreate.as_view(), name='create_user'),
@@ -14,5 +14,5 @@ urlpatterns = [
     path('friend_requests/<int:friendRequestId>/accept', FriendAccept.as_view(), name='friend_accept'),
     path('friend_requests/<int:friendRequestId>/refuse', FriendRefuse.as_view(), name='friend_refuse'),
     path('friend_requests/<int:friendRequestId>', FriendDetail.as_view(), name='friend_detail'),
-    #path('users/<int:userId>/friend_requests', views.UserFriendRequests.as_view(), name='user_friend_requests'),
+    path('users/<int:userId>/friend_requests', views.UserFriendRequests.as_view(), name='user_friend_requests'),
 ]
