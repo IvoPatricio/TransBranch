@@ -9,11 +9,29 @@ from .serializers.serializers_friendrequest import FriendRequestSerializer
 from .models import User as User
 from .models import FriendRequest as FriendRequest
 
+
+#Shell Testing configure
+#docker exec -it container python3 manage.py shell
+#from transcendence.models import User
+#user1 = User.objects.create(email='user1@gmai.com', password='123abc', username='user1')
+#user2 = User.objects.create(email='2user2@gmai.com', password='222aaa', username='user2')
+#User.objects.all()
+#User.objects.filter(id=id).delete()
+#for user in User.objects.all():
+#print(f"ID:{user.id}, Email: {user.email}, Password: {user.password}, Username: {user.username}")
+
+#from transcendence.models import FriendRequest
+#friend_request = FriendRequest.objects.create(user1=id, user2=id)
+
 #POST sends data to the server. 
 class FriendCreate(APIView):
     def post(self, request, format=None):
         user1 = request.data.get('user1')
         user2 = request.data.get('user2')
+
+        #friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2)
+        #serializer = FriendRequestSerializer(friend_request)
+        #return JsonResponse(serializer.data, safe=False)
         try:
             friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2)
             serializer = FriendRequestSerializer(friend_request)
