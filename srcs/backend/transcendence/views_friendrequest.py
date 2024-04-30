@@ -30,10 +30,6 @@ class FriendCreate(APIView):
     def post(self, request, format=None):
         user1 = request.data.get('user1')
         user2 = request.data.get('user2')
-
-        #friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2)
-        #serializer = FriendRequestSerializer(friend_request)
-        #return JsonResponse(serializer.data, safe=False)
         try:
             friend_request = FriendRequest.objects.create(user1_id=user1, user2_id=user2)
             serializer = FriendRequestSerializer(friend_request)
@@ -43,10 +39,10 @@ class FriendCreate(APIView):
 
 #PATCH updates resources on the server. 
 class FriendCancel(APIView):
-    def patch(self, request, friend_request_id, format=None):
-
+    def patch(self, request, friendRequestId, format=None):
         try:
-            friend_request = FriendRequest.objects.get(pk=friend_request_id)
+            #friend_request = FriendRequest.objects.get(pk=friendRequestId)
+            friend_request = FriendRequest.objects.all()[friendRequestId-1]
             friend_request.was_canceled = True
             friend_request.save()
             serializer = FriendRequestSerializer(friend_request)
@@ -55,9 +51,10 @@ class FriendCancel(APIView):
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class FriendAccept(APIView):
-    def patch(self, request, friend_request_id, format=None):
+    def patch(self, request, friendRequestId, format=None):
         try:
-            friend_request = FriendRequest.objects.get(pk=friend_request_id)
+            #friend_request = FriendRequest.objects.get(pk=friend_request_id)
+            friend_request = FriendRequest.objects.all()[friendRequestId-1]
             friend_request.was_accepted = True
             friend_request.save()
             serializer = FriendRequestSerializer(friend_request)
@@ -66,9 +63,10 @@ class FriendAccept(APIView):
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class FriendRefuse(APIView):
-    def patch(self, request, friend_request_id, format=None):
+    def patch(self, request, friendRequestId, format=None):
         try:
-            friend_request = FriendRequest.objects.get(pk=friend_request_id)
+            #friend_request = FriendRequest.objects.get(pk=friendRequestId)
+            friend_request = FriendRequest.objects.all()[friendRequestId-1]
             friend_request.was_refused = True
             friend_request.save()
             serializer = FriendRequestSerializer(friend_request)
@@ -78,10 +76,11 @@ class FriendRefuse(APIView):
 
 #GET retrieves data from the server
 class FriendDetail(APIView):
-    def get(self, request, friend_request_id, format=None):
+    def get(self, request, friendRequestId, format=None):
         try:
-            friend_request = FriendRequest.objects.get(pk=friend_request_id)
-            serializer = FriendRequestSerializer(friend_request, many=True)
+            #friend_request = FriendRequest.objects.get(pk=friendRequestId)
+            friend_request = FriendRequest.objects.all()[friendRequestId-1]
+            serializer = FriendRequestSerializer(friend_request)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -89,10 +88,11 @@ class FriendDetail(APIView):
 #many = multiple instances
 class UserFriendRequests(APIView):
     def get(self, request, userId, format=None):
+        #return JsonResponse(123, safe=False)
         try:
-            user = user.objects.get(pk = userId)
-            friend_request = = FriendRequest.objects.filter(user=user)
-            serializer = FriendRequestSerializer(friend_request)
+            user = User.objects.get(pk=userId)
+            friend_requests = FriendRequest.objects.filter(user1=user) | FriendRequest.objects.filter(user2=user)
+            serializer = FriendRequestSerializer(friend_requests, many=True)
             return JsonResponse({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
         except Exception as error:
             return JsonResponse({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
